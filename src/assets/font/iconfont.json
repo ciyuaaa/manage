@@ -1,0 +1,65 @@
+{
+  "id": "2651613",
+  "name": "manage",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "6067960",
+      "name": "订单",
+      "font_class": "icon-",
+      "unicode": "e600",
+      "unicode_decimal": 58880
+    },
+    {
+      "icon_id": "6971227",
+      "name": "user-manage",
+      "font_class": "user-manage",
+      "unicode": "e644",
+      "unicode_decimal": 58948
+    },
+    {
+      "icon_id": "20135937",
+      "name": "权限",
+      "font_class": "guanli0127yihuifu-48",
+      "unicode": "e633",
+      "unicode_decimal": 58931
+    },
+    {
+      "icon_id": "20810873",
+      "name": "goods",
+      "font_class": "goods",
+      "unicode": "e686",
+      "unicode_decimal": 59014
+    },
+    {
+      "icon_id": "21976115",
+      "name": "数据统计",
+      "font_class": "tongji",
+      "unicode": "ead5",
+      "unicode_decimal": 60117
+    },
+    {
+      "icon_id": "6047217",
+      "name": "password normal",
+      "font_class": "tuceng",
+      "unicode": "e62f",
+      "unicode_decimal": 58927
+    },
+    {
+      "icon_id": "4133301",
+      "name": "user",
+      "font_class": "user",
+      "unicode": "e61c",
+      "unicode_decimal": 58908
+    },
+    {
+      "icon_id": "20375674",
+      "name": "Category attributes-fill",
+      "font_class": "Categoryattributes-fill",
+      "unicode": "e745",
+      "unicode_decimal": 59205
+    }
+  ]
+}

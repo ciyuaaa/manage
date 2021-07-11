@@ -2,17 +2,17 @@
     <div class="login-container">
         <div class="login-box">
             <div class="avatar_box">
-                <img src="../assets/img/logo/logo.png" alt="">
+                <img src="~assets/img/logo/logo.png" alt="">
             </div>
             <el-form class="login_form" :model="loginForm" :rules="rules" ref="loginForm">
                 <el-form-item prop="username">
                     <el-input v-model="loginForm.username" >
-                        <img class="icon" slot="prefix" src="../assets/img/login/user.svg" alt="">
+                        <i slot="prefix" class="iconfont icon-user"></i>
                     </el-input>
                 </el-form-item>
                 <el-form-item prop="password">
                     <el-input v-model="loginForm.password" show-password>
-                        <img class="icon" slot="prefix" src="../assets/img/login/password.svg" alt="">
+                        <i slot="prefix" class="iconfont icon-tuceng"></i>
                     </el-input>
                 </el-form-item>
                 <el-form-item class="btns">
@@ -21,19 +21,18 @@
                 </el-form-item>
             </el-form>
         </div>
-        <!-- <el-button>默认按钮</el-button> -->
     </div>
 </template>
 
 <script>
-import {loginRequest} from '../network/login'
+import {loginRequest} from 'network/login'
 export default {
     name: "login",
     data() {
         return {
             loginForm: {
-                username: "",
-                password: ""
+                username: "admin",
+                password: "123456"
             },
             rules: {
                 username: [
