@@ -24,23 +24,45 @@
                 </template>
             </el-table-column>
         </el-table>
-        <custom-dialog 
+        <form-dialog 
         title="修改用户信息"
         :dialogVisible="editVisible" 
         :prop="editDialog"
         :rules="rules"
         @submit="editSubmit"
         @close="editVisible = false" />
+
+        <el-dialog :visible.sync="setUserRoleVisible" title="分配角色" @close="closedSetUser">
+            <el-row>
+                <el-col>当前的用户: {{setUserRole.username}}</el-col>
+            </el-row>
+            <el-row>
+                <el-col>当前的用户: {{setUserRole.role_name}}</el-col>
+            </el-row>
+            <el-row>
+                <el-col>
+                    <span>分配新角色：</span>
+                    <el-select v-model="currentSelectRole">
+                        <el-option v-for="item in rolesList" :key="item.id" :label="item.roleName" :value="item.id"></el-option>
+                    </el-select> 
+                </el-col>
+            </el-row>
+            <span slot="footer">
+                <el-button type="info" @click="setUserRoleVisible = false">退出</el-button>
+                <el-button type="primary" @click="setRole">确定</el-button>
+            </span>
+        </el-dialog>
     </div>
 </template>
 
 <script>
-import {updataUsersState, editUser, deleteUser} from "network/home.js"
-import CustomDialog from "./CustomDialog.vue"
+const Users = "users"
+import {updataUsersState, del, edit, get, setUserRole} from "network/home.js"
+import FormDialog from "components/FormDialog.vue"
 export default {
     name: "UsersListTable",
     components: {
-        CustomDialog
+        FormDialog
     },
     props: {
         usersInfo: {},
@@ -56,14 +78,17 @@ export default {
                     {label: '手机', prop: "mobile"},
                 ],
                 form: {},
-            }
-            
+            },
+            setUserRoleVisible: false,
+            setUserRole: {},
+            rolesList: {},
+            currentSelectRole: ""
         }
     },
     methods: {
         async handleEdit(id) {
             this.editVisible = true
-            const {data, meta} = await editUser(id)
+            const {data, meta} = await edit(`${Users}/${id}`)
             if (meta.status !== 200) {
                 return this.$message.error(meta.msg)
             }
@@ -76,7 +101,7 @@ export default {
                     cancelButtonText: '取消',
                     type: 'warning'
                 })
-                const {meta} = await deleteUser(user.id)
+                const {meta} = await del(`${Users}/${user.id}`)
                 this.$emit('update')
                 this.$message.success(meta.msg)
             } catch(e) {
@@ -84,8 +109,21 @@ export default {
             }
             
         },
-        handleSet(user) {
-            this.$emit('edit', user)
+        async handleSet(user) {
+            this.setUserRoleVisible = true
+            const {data} = await get('roles')
+            this.rolesList = data
+            this.setUserRole = user
+            
+        },
+        async setRole() {
+            const {data, meta} = await setUserRole(this.setUserRole.id, {
+                rid: this.currentSelectRole
+            })
+            if (meta.status !== 200) return this.$message.error(meta.msg)
+            this.$emit("update")
+            this.setUserRoleVisible = false
+            this.$message.success(meta.msg)
         },
         async _stateChange(user) {
             let {meta} = await updataUsersState(user.id, user.mg_state)
@@ -96,7 +134,7 @@ export default {
             }
         },
         async editSubmit(form) {
-            let {meta} = await editUser(form.id, {
+            let {meta} = await edit(`${Users}/${form.id}`, {
                 method: "PUT",
                 body: JSON.stringify(form)
             })
@@ -107,6 +145,9 @@ export default {
             this.editVisible = false
             this.$emit('update')
             this.$message.success(meta.msg)
+        },
+        closedSetUser() {
+            this.currentSelectRole = ''
         }
     }
 }

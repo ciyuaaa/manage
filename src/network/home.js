@@ -3,7 +3,7 @@ export const menus = async () => {
     return await request("menus")
 }
 
-export const users = async (pagenum='1', pagesize='5', query="") => {
+export const getUsers = async (pagenum='1', pagesize='5', query="") => {
     return await request(`users?query=${query}&pagenum=${pagenum}&pagesize=${pagesize}`)
 }
 
@@ -13,25 +13,45 @@ export const updataUsersState = async (uid, type) => {
     })
 }
 
-export const addUser = async (user) => {
-    return await request("users", {
-        method: "POST",
-        body: JSON.stringify(user)
+export const setUserRole = async (id, rids) => {
+    return await request(`users/${id}/role`, {
+        method: 'PUT',
+        body: JSON.stringify(rids)
     })
 }
 
-export const deleteUser = async id => {
-    return await request(`users/${id}`, {
+export const getRightsList = async () => {
+    return await request('rights/list')
+}
+
+export const getRoles = async () => {
+    return await request("roles")
+}
+
+export const add = async (url, form) => {
+    return await request(url, {
+        method: 'POST',
+        body: JSON.stringify(form)
+    })
+}
+
+export const del = async (url) => {
+    return await request(url, {
         method: "DELETE"
     })
 }
 
-export const editUser = async (id, option = {}) => {
-    return await request(`users/${id}`, option)
+export const edit = async (url, option = {}) => {
+    return await request(url, option)
 }
 
-export const setUserRole = async (id) => {
-    return await request(`users/${id}/role`, {
-        method: 'PUT'
+export const get = async (url, option = {}) => {
+    return await request(url, option)
+}
+
+export const setRoleRights = async (roleId, rids) => {
+    return await request(`roles/${roleId}/rights`, {
+        method: "POST",
+        body: JSON.stringify(rids),
     })
 }

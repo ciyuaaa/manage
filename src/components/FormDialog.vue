@@ -3,7 +3,7 @@
          <el-dialog :visible.sync="visible" width="50%" :title="title">
             <el-form :model="prop.form" :rules="rules" ref="dialogForm">
                 <el-form-item v-for="(item, index) in prop.attr" :key="index"
-                :label='item.label' label-width="70px" :prop="item.prop">
+                :label='item.label' :label-width="item.lw || ''" :prop="item.prop">
                     <el-input v-model="prop.form[item.prop]" :disabled='item.disabled' :type='item.type || "text"'/>
                 </el-form-item>
             </el-form>
@@ -17,7 +17,7 @@
 
 <script>
 export default {
-    name: "CustomDialog",
+    name: "FormDialog",
     props: {
         dialogVisible: false,
         title: "",

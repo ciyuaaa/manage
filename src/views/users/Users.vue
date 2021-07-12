@@ -1,8 +1,7 @@
 <template>
     <div>
         <breadcrumb :list='["用户管理", "用户列表"]' />
-        
-        <el-card class="box-card">
+        <el-card>
             <el-row :gutter="20">
                 <el-col :span="8">
                     <el-input
@@ -35,15 +34,18 @@
             </el-row>
             <el-row>
                 <el-col>
-                    <pagination 
-                    :usersInfo="usersInfo" 
-                    @change="change" 
-                    @sizeChange="sizeChange" 
-                    />
+                    <el-pagination
+                        :total="usersInfo.total"
+                        :page-size="5"
+                        :page-sizes="[2, 5, 10]"
+                        layout="total, sizes, prev, pager, next, jumper"
+                        :current-page="usersInfo.pagenum"
+                        @size-change="sizeChange"
+                        @current-change="change" />
                 </el-col>
             </el-row>
         </el-card>
-        <custom-dialog
+        <form-dialog
             :dialogVisible="dialogVisible" 
             :prop="addUser"
             title="添加用户"
@@ -55,17 +57,15 @@
 </template>
 
 <script>
-import {users, addUser} from "network/home.js"
+import {getUsers, add} from "network/home.js"
 import Breadcrumb from "components/Breadcrumb.vue"
-import Pagination from "./usersComps/Pagination.vue"
-import CustomDialog from './usersComps/CustomDialog.vue'
+import FormDialog from 'components/FormDialog.vue'
 import UsersListTable from "./usersComps/UsersListTable.vue"
 export default {
     name: "Users",
     components: {
         Breadcrumb,
-        Pagination,
-        CustomDialog,
+        FormDialog,
         UsersListTable,
     },
     created() {
@@ -125,7 +125,7 @@ export default {
     methods: {
         async _getUsers() {
             const {pagenum, pagesize, query} = this.usersInfo
-            let {data, meta} = await users(pagenum, pagesize, query)
+            let {data, meta} = await getUsers(pagenum, pagesize, query)
             if (meta.status === 200) {
                 this.usersInfo.usersList = data.users
                 this.usersInfo.total = data.total
@@ -134,7 +134,7 @@ export default {
             }
         },
          async _addUser(form) {
-            let {meta} = await addUser(form)
+            let {meta} = await add('users', form)
             if (meta.status !== 201) {
                 return this.$message.error(meta.msg)
             }
